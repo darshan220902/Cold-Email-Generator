@@ -7,6 +7,9 @@ from langchain_groq import ChatGroq
 import chromadb
 import pandas as pd
 import uuid
+_import__('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 
 def scrap(url):
     loader = WebBaseLoader(url)
