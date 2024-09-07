@@ -180,7 +180,7 @@ def main():
         
                     
                     st.success("✅ Email Generated Successfully!")
-                    st.write(st.session_state.email_content)
+                    
                     
                 
                 except Exception as e:
@@ -191,6 +191,8 @@ def main():
     # Input field for recipient email address
     if st.session_state.email_generated:
         # Input fields for the subject and recipient email address
+        st.write("### Generated Email Content:")
+        st.write(st.session_state.email_content)
         st.session_state.email_subject = st.text_input("Enter the Subject", value=st.session_state.email_subject)
         st.session_state.recipient_email = st.text_input("Enter the recipient's email address:", value=st.session_state.recipient_email)
         
