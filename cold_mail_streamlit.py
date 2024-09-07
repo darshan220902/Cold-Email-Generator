@@ -46,8 +46,19 @@ def fetch_from_data(data, api_key):
     return x[0]
 
 # Function to generate links and create email
-def generate_links(job, file):
-    if file:
+def generate_links(job, file, use_builtin_csv):
+    if use_builtin_csv:
+        df = pd.read_csv('portfolio.csv')
+        client = chromadb.PersistentClient('vectostore')
+        collection = client.get_or_create_collection('portfolio')
+        if not collection.count():
+            for _, row in df.iterrows():
+                collection.add(documents=row['Techstack'],
+                            metadatas={"links": row["Links"]},
+                            ids=[str(uuid.uuid4())])
+        links = collection.query(query_texts=job['skills'], n_results=2).get('metadatas', [])
+        return links
+    elif file:
         df = pd.read_csv(file)
         client = chromadb.PersistentClient('vectostore')
         collection = client.get_or_create_collection('portfolio')
@@ -58,7 +69,7 @@ def generate_links(job, file):
                             ids=[str(uuid.uuid4())])
         links = collection.query(query_texts=job['skills'], n_results=2).get('metadatas', [])
         return links
-
+    
 # Function to generate the email
 def email_generate(job, links, name, company, designation, api_key):
     llm = ChatGroq(
@@ -130,6 +141,7 @@ def main():
     st.info("ℹ️ Please upload a valid CSV file with two columns: 'Techstack' and 'Links'. The CSV should contain your portfolio information.")
 
     file = st.file_uploader("📁 Upload CSV File of Portfolio", type=['csv'])
+    use_builtin_csv = st.checkbox("Use built-in CSV data instead of uploading a file")
     url = st.text_input("🌐 Enter Job URL:", placeholder="https://example.com/careers")
     api_key = st.text_input("🔑 Enter your GROQ API Key:", type="password", placeholder="Your GROQ API Key")
     name = st.text_input("👤 Your Name", placeholder="John Doe")
@@ -141,7 +153,7 @@ def main():
             with st.spinner("Scraping and generating the email... ⏳"):
                 data = scrap(url)
                 job = fetch_from_data(data, api_key)
-                links = generate_links(job, file)
+                links = generate_links(job, file, use_builtin_csv)
                 email = email_generate(job, links, name, company, designation, api_key)
                 st.success("✅ Email Generated Successfully!")
                 st.write(email)
