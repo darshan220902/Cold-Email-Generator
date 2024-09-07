@@ -10,7 +10,7 @@ sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
 import chromadb
 import pandas as pd
 import uuid
-
+import urllib.parse
 def scrap(url):
     loader = WebBaseLoader(url)
     data = loader.load()
