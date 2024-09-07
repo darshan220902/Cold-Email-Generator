@@ -121,7 +121,7 @@ def email_generate(job, links, name, company, designation, api_key):
 
 # Streamlit UI
 def main():
-    st.set_page_config(page_title="Job Posting and Email Generator", page_icon="💼")
+    st.set_page_config(page_title="Email Generator", page_icon="📧")
 
     st.title("📧 Cold Email Generator")
 
