@@ -137,7 +137,7 @@ def create_gmail_link(recipient_email, subject, body):
     return gmail_link
 # Streamlit UI
 def main():
-    st.set_page_config(page_title="Job Posting and Email Generator", page_icon="💼")
+    st.set_page_config(page_title="Cold Email Generator", page_icon="📧")
 
     st.title("📧 Cold Email Generator")
 
