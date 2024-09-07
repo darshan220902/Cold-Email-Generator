@@ -130,12 +130,24 @@ def email_generate(job, links, name, company, designation, api_key):
     mail = chain_email.invoke({"job_description": str(job), "link_list": links, "writer_name": name, "company_name": company, "writer_designation": designation})
     return mail.content
 
+def create_gmail_link(recipient_email, subject, body):
+    encoded_subject = urllib.parse.quote(subject)
+    encoded_body = urllib.parse.quote(body)
+    gmail_link = f"https://mail.google.com/mail/?view=cm&fs=1&to={recipient_email}&su={encoded_subject}&body={encoded_body}"
+    return gmail_link
 # Streamlit UI
 def main():
-    st.set_page_config(page_title="Email Generator", page_icon="📧")
+    st.set_page_config(page_title="Job Posting and Email Generator", page_icon="💼")
 
     st.title("📧 Cold Email Generator")
 
+    # Initialize session state variables
+    if "email_content" not in st.session_state:
+        st.session_state.email_content = ""
+    if "recipient_email" not in st.session_state:
+        st.session_state.recipient_email = ""
+    if "email_subject" not in st.session_state:
+        st.session_state.email_subject = "No SUbject"
 
     # Collect all inputs
     st.info("ℹ️ Please upload a valid CSV file with two columns: 'Techstack' and 'Links'. The CSV should contain your portfolio information.")
@@ -148,17 +160,39 @@ def main():
     company = st.text_input("🏢 Your Company Name", placeholder="Tech Innovators Inc.")
     designation = st.text_input("💼 Your Designation", placeholder="AI Specialist")
 
+    # Generate email on button click
     if st.button("Generate Email ✉️"):
+        # Ensure all necessary fields are filled
         if url and api_key and name and company and designation:
             with st.spinner("Scraping and generating the email... ⏳"):
-                data = scrap(url)
-                job = fetch_from_data(data, api_key)
-                links = generate_links(job, file, use_builtin_csv)
-                email = email_generate(job, links, name, company, designation, api_key)
-                st.success("✅ Email Generated Successfully!")
-                st.write(email)
+                try:
+                    # Call your scraping and processing functions
+                    data = scrap(url)
+                    job = fetch_from_data(data, api_key)
+                    links = generate_links(job, file, use_builtin_csv)
+                    email = email_generate(job, links, name, company, designation, api_key)
+                    
+                    # Store the generated email in session state
+                    st.session_state.email_content = email
+                    
+                    st.success("✅ Email Generated Successfully!")
+                    st.write(st.session_state.email_content)
+                
+                except Exception as e:
+                    st.error(f"An error occurred: {e}")
         else:
             st.warning("⚠️ Please fill in all fields to generate the email.")
+    
+    # Input field for recipient email address
+    st.session_state.email_subject = st.text_input("Enter the Subject", value=st.session_state.email_subject)
+    st.session_state.recipient_email = st.text_input("Enter the recipient's email address:", value=st.session_state.recipient_email)
+    
+    # Button to open Gmail to compose the email
+    if st.session_state.email_content and st.session_state.recipient_email:
+        if st.button("Open Gmail to Compose Email"):
+            # Generate and display the Gmail link
+            gmail_link = create_gmail_link(st.session_state.recipient_email, st.session_state.email_subject, st.session_state.email_content)
+            st.markdown(f'<a href="{gmail_link}" target="_blank">Click here to open Gmail and compose your email</a>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
