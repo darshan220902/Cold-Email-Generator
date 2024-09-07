@@ -147,7 +147,9 @@ def main():
     if "recipient_email" not in st.session_state:
         st.session_state.recipient_email = ""
     if "email_subject" not in st.session_state:
-        st.session_state.email_subject = "No SUbject"
+        st.session_state.email_subject = ""
+    if "email_generated" not in st.session_state:
+        st.session_state.email_generated = False
 
     # Collect all inputs
     st.info("ℹ️ Please upload a valid CSV file with two columns: 'Techstack' and 'Links'. The CSV should contain your portfolio information.")
@@ -174,9 +176,12 @@ def main():
                     
                     # Store the generated email in session state
                     st.session_state.email_content = email
+                    st.session_state.email_generated = True
+        
                     
                     st.success("✅ Email Generated Successfully!")
                     st.write(st.session_state.email_content)
+                    
                 
                 except Exception as e:
                     st.error(f"An error occurred: {e}")
@@ -184,15 +189,17 @@ def main():
             st.warning("⚠️ Please fill in all fields to generate the email.")
     
     # Input field for recipient email address
-    st.session_state.email_subject = st.text_input("Enter the Subject", value=st.session_state.email_subject)
-    st.session_state.recipient_email = st.text_input("Enter the recipient's email address:", value=st.session_state.recipient_email)
-    
-    # Button to open Gmail to compose the email
-    if st.session_state.email_content and st.session_state.recipient_email:
-        if st.button("Open Gmail to Compose Email"):
-            # Generate and display the Gmail link
-            gmail_link = create_gmail_link(st.session_state.recipient_email, st.session_state.email_subject, st.session_state.email_content)
-            st.markdown(f'<a href="{gmail_link}" target="_blank">Click here to open Gmail and compose your email</a>', unsafe_allow_html=True)
+    if st.session_state.email_generated:
+        # Input fields for the subject and recipient email address
+        st.session_state.email_subject = st.text_input("Enter the Subject", value=st.session_state.email_subject)
+        st.session_state.recipient_email = st.text_input("Enter the recipient's email address:", value=st.session_state.recipient_email)
+        
+        # Button to open Gmail to compose the email
+        if st.session_state.recipient_email:
+            if st.button("Open Gmail to Compose Email"):
+                # Generate and display the Gmail link
+                gmail_link = create_gmail_link(st.session_state.recipient_email, st.session_state.email_subject, st.session_state.email_content)
+                st.markdown(f'<a href="{gmail_link}" target="_blank">Click here to open Gmail and compose your email</a>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
