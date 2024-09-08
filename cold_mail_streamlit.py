@@ -133,8 +133,10 @@ def email_generate(job, links, name, company, designation, api_key):
 def create_gmail_link(recipient_email, subject, body):
     encoded_subject = urllib.parse.quote(subject)
     encoded_body = urllib.parse.quote(body)
-    gmail_link = f"https://mail.google.com/mail/?view=cm&fs=1&to={recipient_email}&su={encoded_subject}&body={encoded_body}"
-    return gmail_link
+    f"mailto:{recipient_email}?subject={encoded_subject}&body={encoded_body}"
+    return mailto_link
+    #gmail_link = f"https://mail.google.com/mail/?view=cm&fs=1&to={recipient_email}&su={encoded_subject}&body={encoded_body}"
+    #return gmail_link
 # Streamlit UI
 def main():
     st.set_page_config(page_title="Cold Email Generator", page_icon="📧")
