@@ -208,7 +208,7 @@ def main():
 
         # Generate mailto link and button
         mailto_link = create_mailto_link(st.session_state.recipient_email, st.session_state.email_subject, st.session_state.email_content)
-        st.markdown(f'<a href="{mailto_link}" target="_blank"><button>Open in Email Client 📧</button></a>', unsafe_allow_html=True)
+        st.markdown(f'<a href="{mailto_link}" target="_blank"><button>MAIL 📧</button></a>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
