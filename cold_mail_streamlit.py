@@ -72,6 +72,7 @@ def generate_links(job, file, use_builtin_csv):
     
 # Function to generate the email
 def email_generate(job, links, name, company, designation, api_key):
+    warn=st.info("ℹ️ Either upload a valid csv or click checkbox {link_list} ⚠️")
     llm = ChatGroq(
         temperature=0, 
         groq_api_key=api_key, 
@@ -91,7 +92,7 @@ def email_generate(job, links, name, company, designation, api_key):
         1. Clearly highlight how {company_name} can address the client's needs as described in the job description.
         2. Emphasize the relevant skills and qualifications required for the job.
         3. Incorporate the most pertinent links from {link_list}'s portfolio to showcase our capabilities and experience related to the job requirements. Only use portfolio provided in the CSV. **Do not use any external knowledge, assumptions, or your own intelligence**.
-        4. If not any portfolio provide print a message **Either upload a valid csv or click checkbox {link_list} ⚠️ **
+        4. If not any portfolio provide print a message **{warning}**
 
         Ensure that:
         - The email is directly tailored to the job description.
@@ -128,7 +129,7 @@ def email_generate(job, links, name, company, designation, api_key):
         """
     )
     chain_email = prompt_email | llm
-    mail = chain_email.invoke({"job_description": str(job), "link_list": links, "writer_name": name, "company_name": company, "writer_designation": designation})
+    mail = chain_email.invoke({"job_description": str(job), "link_list": links, "writer_name": name, "company_name": company, "writer_designation": designation,"warning":warn})
     return mail.content
 
 
