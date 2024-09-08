@@ -91,7 +91,7 @@ def email_generate(job, links, name, company, designation, api_key):
         1. Clearly highlight how {company_name} can address the client's needs as described in the job description.
         2. Emphasize the relevant skills and qualifications required for the job.
         3. Incorporate the most pertinent links from {link_list}'s portfolio to showcase our capabilities and experience related to the job requirements. Only use portfolio provided in the CSV. **Do not use any external knowledge, assumptions, or your own intelligence**.
-        4. If not any portfolio provide print a message **Either upload a valid csv or click checkbox ⚠️**
+        4. If not any portfolio provide print a message **Either upload a valid csv or click checkbox {⚠️}**
 
         Ensure that:
         - The email is directly tailored to the job description.
