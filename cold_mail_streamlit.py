@@ -219,7 +219,7 @@ def main():
     if "recipient_email" not in st.session_state:
         st.session_state.recipient_email = ""
     if "email_subject" not in st.session_state:
-        st.session_state.email_subject = "Generated Email from Streamlit App"
+        st.session_state.email_subject = ""
     if "email_generated" not in st.session_state:
         st.session_state.email_generated = False
     if "url" not in st.session_state:
