@@ -267,7 +267,8 @@ def main():
 
     # Display generated email
     if st.session_state.email_generated:
-        st.text_area("Generated Email:", value=st.session_state.email_content, height=200)
+        st.write("Generated Email:")
+        st.write(st.session_state.email_content)
         
         # Email-related inputs
         st.session_state.recipient_email = st.text_input("Enter recipient's email address", value=st.session_state.recipient_email)
