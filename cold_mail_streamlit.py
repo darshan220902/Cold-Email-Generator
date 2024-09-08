@@ -130,16 +130,92 @@ def email_generate(job, links, name, company, designation, api_key):
     mail = chain_email.invoke({"job_description": str(job), "link_list": links, "writer_name": name, "company_name": company, "writer_designation": designation})
     return mail.content
 
-def create_gmail_link(recipient_email, subject, body):
+# def create_gmail_link(recipient_email, subject, body):
+#     encoded_subject = urllib.parse.quote(subject)
+#     encoded_body = urllib.parse.quote(body)
+#     f"mailto:{recipient_email}?subject={encoded_subject}&body={encoded_body}"
+#     return mailto_link
+#     #gmail_link = f"https://mail.google.com/mail/?view=cm&fs=1&to={recipient_email}&su={encoded_subject}&body={encoded_body}"
+#     #return gmail_link
+# # Streamlit UI
+# def main():
+#     st.set_page_config(page_title="Cold Email Generator", page_icon="📧")
+
+#     st.title("📧 Cold Email Generator")
+
+#     # Initialize session state variables
+#     if "email_content" not in st.session_state:
+#         st.session_state.email_content = ""
+#     if "recipient_email" not in st.session_state:
+#         st.session_state.recipient_email = ""
+#     if "email_subject" not in st.session_state:
+#         st.session_state.email_subject = ""
+#     if "email_generated" not in st.session_state:
+#         st.session_state.email_generated = False
+
+#     # Collect all inputs
+#     st.info("ℹ️ Please upload a valid CSV file with two columns: 'Techstack' and 'Links'. The CSV should contain your portfolio information.")
+
+#     file = st.file_uploader("📁 Upload CSV File of Portfolio", type=['csv'])
+#     use_builtin_csv = st.checkbox("Use built-in CSV data instead of uploading a file")
+#     url = st.text_input("🌐 Enter Job URL:", placeholder="https://example.com/careers")
+#     api_key = st.text_input("🔑 Enter your GROQ API Key:", type="password", placeholder="Your GROQ API Key")
+#     name = st.text_input("👤 Your Name", placeholder="John Doe")
+#     company = st.text_input("🏢 Your Company Name", placeholder="Tech Innovators Inc.")
+#     designation = st.text_input("💼 Your Designation", placeholder="AI Specialist")
+
+#     # Generate email on button click
+#     if st.button("Generate Email ✉️"):
+#         # Ensure all necessary fields are filled
+#         if url and api_key and name and company and designation:
+#             with st.spinner("Scraping and generating the email... ⏳"):
+#                 try:
+#                     # Call your scraping and processing functions
+#                     data = scrap(url)
+#                     job = fetch_from_data(data, api_key)
+#                     links = generate_links(job, file, use_builtin_csv)
+#                     email = email_generate(job, links, name, company, designation, api_key)
+                    
+#                     # Store the generated email in session state
+#                     st.session_state.email_content = email
+#                     st.session_state.email_generated = True
+        
+                    
+#                     st.success("✅ Email Generated Successfully!")
+                    
+                    
+                
+#                 except Exception as e:
+#                     st.error(f"An error occurred: {e}")
+#         else:
+#             st.warning("⚠️ Please fill in all fields to generate the email.")
+    
+#     # Input field for recipient email address
+#     if st.session_state.email_generated:
+#         # Input fields for the subject and recipient email address
+#         st.write("### Generated Email Content:")
+#         st.write(st.session_state.email_content)
+#         st.session_state.email_subject = st.text_input("Enter the Subject", value=st.session_state.email_subject)
+#         st.session_state.recipient_email = st.text_input("Enter the recipient's email address:", value=st.session_state.recipient_email)
+        
+#         # Button to open Gmail to compose the email
+#         if st.session_state.recipient_email:
+#             if st.button("Open Gmail to Compose Email"):
+#                 # Generate and display the Gmail link
+#                 gmail_link = create_gmail_link(st.session_state.recipient_email, st.session_state.email_subject, st.session_state.email_content)
+#                 st.markdown(f'<a href="{gmail_link}" target="_blank">Click here to open Gmail and compose your email</a>', unsafe_allow_html=True)
+
+# if __name__ == "__main__":
+#     main()
+def create_mailto_link(recipient_email, subject, body):
     encoded_subject = urllib.parse.quote(subject)
     encoded_body = urllib.parse.quote(body)
-    f"mailto:{recipient_email}?subject={encoded_subject}&body={encoded_body}"
+    mailto_link = f"mailto:{recipient_email}?subject={encoded_subject}&body={encoded_body}"
     return mailto_link
-    #gmail_link = f"https://mail.google.com/mail/?view=cm&fs=1&to={recipient_email}&su={encoded_subject}&body={encoded_body}"
-    #return gmail_link
+
 # Streamlit UI
 def main():
-    st.set_page_config(page_title="Cold Email Generator", page_icon="📧")
+    st.set_page_config(page_title="Job Posting and Email Generator", page_icon="💼")
 
     st.title("📧 Cold Email Generator")
 
@@ -149,7 +225,7 @@ def main():
     if "recipient_email" not in st.session_state:
         st.session_state.recipient_email = ""
     if "email_subject" not in st.session_state:
-        st.session_state.email_subject = ""
+        st.session_state.email_subject = "Generated Email from Streamlit App"
     if "email_generated" not in st.session_state:
         st.session_state.email_generated = False
 
@@ -179,31 +255,28 @@ def main():
                     # Store the generated email in session state
                     st.session_state.email_content = email
                     st.session_state.email_generated = True
-        
                     
                     st.success("✅ Email Generated Successfully!")
-                    
-                    
-                
                 except Exception as e:
                     st.error(f"An error occurred: {e}")
         else:
             st.warning("⚠️ Please fill in all fields to generate the email.")
-    
-    # Input field for recipient email address
+
+    # Show the email content if generated
     if st.session_state.email_generated:
-        # Input fields for the subject and recipient email address
         st.write("### Generated Email Content:")
         st.write(st.session_state.email_content)
+        
+        # Input fields for the subject and recipient email address
         st.session_state.email_subject = st.text_input("Enter the Subject", value=st.session_state.email_subject)
         st.session_state.recipient_email = st.text_input("Enter the recipient's email address:", value=st.session_state.recipient_email)
         
-        # Button to open Gmail to compose the email
+        # Button to open mailto link
         if st.session_state.recipient_email:
-            if st.button("Open Gmail to Compose Email"):
-                # Generate and display the Gmail link
-                gmail_link = create_gmail_link(st.session_state.recipient_email, st.session_state.email_subject, st.session_state.email_content)
-                st.markdown(f'<a href="{gmail_link}" target="_blank">Click here to open Gmail and compose your email</a>', unsafe_allow_html=True)
+            if st.button("Open Email Client"):
+                # Generate and display the mailto link
+                mailto_link = create_mailto_link(st.session_state.recipient_email, st.session_state.email_subject, st.session_state.email_content)
+                st.markdown(f'<a href="{mailto_link}" target="_blank">Click here to open your email client and compose your email</a>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
