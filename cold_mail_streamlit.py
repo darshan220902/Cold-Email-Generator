@@ -214,13 +214,15 @@ if __name__ == "__main__":
     main()
 
 # Centered text with name and link in blue, without underline
+st.markdown("<p style='color: blue;'>Built with 💙 by <strong>Darshan Parsoliya</strong>. Let's connect on <a href='https://www.linkedin.com/in/darshan-parsoliya-a79661220/' style='color: blue;'>LinkedIn</a>.</p>", unsafe_allow_html=True)
+# Centered text with name and link in blue
 st.markdown("""
     <div style='text-align: center;'>
         <p style='display: inline;'>
             Built with 💙 by 
             <strong style='color: blue;'>Darshan Parsoliya</strong>. 
             Let's connect on 
-            <a href='https://www.linkedin.com/in/your-profile' style='color: blue; text-decoration: none;'>LinkedIn</a>.
+            <a href='https://www.linkedin.com/in/darshan-parsoliya-a79661220/' style='color: blue;'>LinkedIn</a>.
         </p>
     </div>
 """, unsafe_allow_html=True)
