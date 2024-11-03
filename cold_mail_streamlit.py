@@ -213,11 +213,6 @@ def main():
 if __name__ == "__main__":
     main()
 
-
-# Centered text with name and link in blue
-if __name__ == "__main__":
-    main()
-
 # Centered text with name and link in blue, without underline
 st.markdown("""
     <div style='text-align: center;'>
