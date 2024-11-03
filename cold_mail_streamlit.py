@@ -210,6 +210,11 @@ def main():
         mailto_link = create_mailto_link(st.session_state.recipient_email, st.session_state.email_subject, st.session_state.email_content)
         st.markdown(f'<a href="{mailto_link}" target="_blank"><button>MAIL 📧</button></a>', unsafe_allow_html=True)
     st.markdown("""
+        <style>
+            footer {visibility: hidden;}
+        </style>
+    """, unsafe_allow_html=True)
+    st.markdown("""
         <div style='text-align: center;'>
             <p style='display: inline;'>
                 Built with 💗 by 
