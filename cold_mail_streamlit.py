@@ -212,3 +212,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+st.markdown("<p style='color: blue;'>Built with 💙 by <strong>Darshan Parsoliya</strong>. Let's connect on <a href='https://www.linkedin.com/in/darshan-parsoliya-a79661220/' style='color: blue;'>LinkedIn</a>.</p>", unsafe_allow_html=True)
+
